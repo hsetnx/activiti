@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd" default-autowire="byName">
+
+    <dubbo:application name="leFinance-Provider"/>
+    <dubbo:registry id="registry" address="${registriesServerAddress}" protocol="zookeeper"/>
+    <dubbo:protocol id="protocol" name="dubbo" port="25006" heartbeat="0" threadpool="cached" threads="512"/>
+    <dubbo:provider id="activiti-provider" timeout="50000" retries="5" loadbalance="roundrobin" cluster="failover"
+                    registry="registry"/>
+
+   <!-- <dubbo:service interface="com.lefinance.bookedbill.interfaces.AcctBookedBillInfoInterfaces" ref="acctBookedBillInfoInterfaces"/>-->
+
+</beans>

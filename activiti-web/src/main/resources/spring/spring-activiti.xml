@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="databaseSchemaUpdate" value="true"/>
+        <property name="jobExecutorActivate" value="false"/>
+        <!-- 配置部署缓存 可参考 API 实现自己的缓存 -->
+        <property name="processDefinitionCacheLimit" value="10"/>
+        <!-- 配置历史 -->
+        <property name="history" value="full"/>
+        <!-- mail配置，具体再配 -->
+        <property name="mailServerHost" value="localhost"/>
+        <property name="mailServerUsername" value="kafeitu"/>
+        <property name="mailServerPassword" value="000000"/>
+        <property name="mailServerPort" value="2025"/>
+        <!-- 批量发布流程 -->
+        <property name="deploymentResources">
+            <list>
+                <value>classpath*:/deployments/*</value>
+            </list>
+        </property>
+        <property name="deploymentMode" value="single-resource"/>
+    </bean>
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+    </bean>
+    <!-- 7大接口 -->
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService"/>
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
+
+</beans>
