@@ -1,4 +1,4 @@
-package com.common.tools.common.utils;
+package com.common.tools.common.hashs;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -14,8 +14,8 @@ import java.util.TreeMap;
  */
 public class ConsistencyHash {
 
-    private List<NodeInfo> physicalNodeInfos;           // 物理节点
-    private TreeMap<Long, NodeInfo> virtualNodes;   // 虚拟节点
+    private List<ServerNodeInfo> physicalServerNodeInfos;           // 物理节点
+    private TreeMap<Long, ServerNodeInfo> virtualNodes;   // 虚拟节点
     private final int NODE_NUM = 64; // 每个机器节点关联的虚拟节点个数
 
     /**
@@ -23,9 +23,9 @@ public class ConsistencyHash {
      * @Time: 2017/4/18 18:20
      * @Describe:构造方法
      */
-    public ConsistencyHash(List<NodeInfo> physicalNodeInfos) {
+    public ConsistencyHash(List<ServerNodeInfo> physicalServerNodeInfos) {
         super();
-        this.physicalNodeInfos = physicalNodeInfos;
+        this.physicalServerNodeInfos = physicalServerNodeInfos;
         this.init();
     }
 
@@ -35,16 +35,16 @@ public class ConsistencyHash {
      * @Describe:初始化环，物理节点插入虚拟节点
      */
     public void init() {
-        virtualNodes = new TreeMap<Long, NodeInfo>();
-        if (null == physicalNodeInfos || physicalNodeInfos.size() == 0) {
+        virtualNodes = new TreeMap<Long, ServerNodeInfo>();
+        if (null == physicalServerNodeInfos || physicalServerNodeInfos.size() == 0) {
 
         }
         //遍历物理节点
-        for (NodeInfo nodeInfo : physicalNodeInfos) {
+        for (ServerNodeInfo serverNodeInfo : physicalServerNodeInfos) {
             //嵌入虚拟节点
             for (int n = 0; n < NODE_NUM; n++) {
-                Long hx = this.hash(nodeInfo.getIp() + "#" + n);
-                virtualNodes.put(hx, nodeInfo);
+                Long hx = this.hash(serverNodeInfo.getIp() + "#" + n);
+                virtualNodes.put(hx, serverNodeInfo);
             }
         }
     }
@@ -54,9 +54,9 @@ public class ConsistencyHash {
      * @Time: 2017/4/18 18:16
      * @Describe:获取顺时针距离最近的node节点
      */
-    public NodeInfo getNodeInfo(String key) {
+    public ServerNodeInfo getNodeInfo(String key) {
         //截取虚拟node的hash值--【大于】--key的hash值的map
-        SortedMap<Long, NodeInfo> tail = virtualNodes.tailMap(hash(key));
+        SortedMap<Long, ServerNodeInfo> tail = virtualNodes.tailMap(hash(key));
         //截取结果不为0,第一个就是需要的节点信息
         if (tail.size() != 0) {
             return tail.get(tail.firstKey());
@@ -108,12 +108,12 @@ public class ConsistencyHash {
 
 
     public static void main(String[] args) {
-        List<NodeInfo> nodeInfos = new ArrayList<>();
+        List<ServerNodeInfo> serverNodeInfos = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            NodeInfo n = new NodeInfo("server" + i, "127.0.0." + i);
-            nodeInfos.add(n);
+            ServerNodeInfo n = new ServerNodeInfo("server" + i, "127.0.0." + i);
+            serverNodeInfos.add(n);
         }
-        ConsistencyHash consistencyHash = new ConsistencyHash(nodeInfos);
+        ConsistencyHash consistencyHash = new ConsistencyHash(serverNodeInfos);
         consistencyHash.getNodeInfo("aaa");
     }
 }

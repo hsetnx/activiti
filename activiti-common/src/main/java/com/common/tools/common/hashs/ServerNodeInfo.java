@@ -1,23 +1,23 @@
-package com.common.tools.common.utils;
+package com.common.tools.common.hashs;
 
 /**
  * @Author: jingyan
  * @Time: 2017/4/18 16:24
  * @Describe:节点信息
  */
-public class NodeInfo {
+public class ServerNodeInfo {
 
     private String name;
     private String ip;
 
-    public NodeInfo(String name, String ip) {
+    public ServerNodeInfo(String name, String ip) {
         this.name = name;
         this.ip = ip;
     }
 
     @Override
     public String toString() {
-        return "NodeInfo{" +
+        return "ServerNodeInfo{" +
                 "name='" + name + '\'' +
                 ", ip='" + ip + '\'' +
                 '}';
