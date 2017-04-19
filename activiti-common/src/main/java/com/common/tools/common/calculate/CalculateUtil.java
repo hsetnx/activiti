@@ -156,8 +156,11 @@ public class CalculateUtil {
  */
 class ResultInfo {
 
+    //公式
     private String formulaStr;
+    //结果值
     private BigDecimal result;
+    //用到的参数
     private List<String> paramKeys;
 
     @Override
