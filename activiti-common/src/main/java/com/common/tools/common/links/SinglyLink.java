@@ -44,15 +44,16 @@ public class SinglyLink {
         /**
          *  把父亲转为自己的儿子，自己变成父亲，然后等待自己原来的儿子把自己变为他的儿子，他（原来的儿子）变成父亲。
          *  关系倒置
-         * 【子承父业】
+         * 【长江后浪推前浪】
          */
         while (null != childNode) {
-
+            //找到主角原始的儿子
             grandsonNode = childNode.getNextNode();
-
+            //把主角的父亲变为主角新的儿子
             childNode.setNextNode(parentNode);
+            //主角升级为父亲
             parentNode = childNode;
-
+            //主角原来的儿子变为新的主角，继续走这一遭
             childNode = grandsonNode;
         }
         //将原链表的头节点的下一个节点置为null，再将反转后的头节点赋给head
