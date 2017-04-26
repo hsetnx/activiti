@@ -25,22 +25,22 @@ public class DefaultProducer {
      */
     public void init() throws MQClientException {
         // 参数信息
-        logger.info("DefaultMQProducer initialize!");
-        logger.info(producerGroup);
-        logger.info(namesrvAddr);
+        logger.info("DefaultProducer initialize ...");
+        logger.info("producerGroup: " + producerGroup);
+        logger.info("namesrvAddr: " + namesrvAddr);
         // 初始化
         defaultMQProducer = new DefaultMQProducer(producerGroup);
         defaultMQProducer.setNamesrvAddr(namesrvAddr);
         defaultMQProducer.setInstanceName(String.valueOf(System.currentTimeMillis()));
         defaultMQProducer.start();
-        logger.info("DefaultMQProudcer start success!");
+        logger.info("DefaultProducer start success ...");
     }
 
-   /**
-    * @Author: jingyan
-    * @Time: 2017/4/17 18:24
-    * @Describe:defaultMQProducer shutdown
-    */
+    /**
+     * @Author: jingyan
+     * @Time: 2017/4/17 18:24
+     * @Describe:defaultMQProducer shutdown
+     */
     public void destroy() {
         defaultMQProducer.shutdown();
         logger.info("DefaultMQProudcer shutdown success!");

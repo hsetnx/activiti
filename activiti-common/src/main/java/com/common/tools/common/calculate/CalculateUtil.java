@@ -69,7 +69,7 @@ public class CalculateUtil {
                 return null;
             }
             ResultInfo resultInfo = new ResultInfo(formulaStr, result, paramKeys);
-            logger.info("结果---公式：" + resultInfo.toString());
+            logger.info("结果---公式：   " + resultInfo.toString());
             return resultInfo;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -166,7 +166,7 @@ class ResultInfo {
     @Override
     public String toString() {
         return "ResultInfo{" +
-                "[公式]formulaStr='" + formulaStr + '\'' +
+                "formulaStr='" + formulaStr + '\'' +
                 ", result=" + result +
                 ", paramKeys=" + paramKeys +
                 '}';

@@ -12,6 +12,7 @@
     <!--加载配置文件-->
     <import resource="spring/spring-mybatis.xml"/>
     <import resource="spring/spring-activiti.xml"/>
+    <import resource="spring/spring-mq.xml"/>
 
    	<context:component-scan base-package="com.common.tools.service" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
