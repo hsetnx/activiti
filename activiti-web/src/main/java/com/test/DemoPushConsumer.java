@@ -19,7 +19,9 @@ public class DemoPushConsumer extends PushListenerAbstract {
     private final Logger logger = LoggerFactory.getLogger(DemoPushConsumer.class);
     @Override
     public ConsumeConcurrentlyStatus handleMsg(List<MessageExt> messageExts, ConsumeConcurrentlyContext context) {
-        logger.info("------ push handle ------");
-        return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+        for(MessageExt messageExt:messageExts){
+            logger.info("------ push handle ------"+messageExt.getMsgId());
+        }
+        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
 }

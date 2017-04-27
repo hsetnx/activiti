@@ -19,7 +19,9 @@ public class DemoPullConsumer extends PullCallBackAbstract {
     private final Logger logger = LoggerFactory.getLogger(DemoPullConsumer.class);
     @Override
     public ConsumeConcurrentlyStatus handleMsg(List<MessageExt> messageExts, PullTaskContext context) {
-        logger.info("------ pull handle ------");
-        return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+        for(MessageExt messageExt:messageExts){
+            logger.info("------ pull handle ------"+messageExt.getMsgId());
+        }
+        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
 }

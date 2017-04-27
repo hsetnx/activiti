@@ -27,7 +27,7 @@
         <property name="topic" value="${topic}"/>
         <property name="tag" value="${tag}"/>
         <property name="maxNums" value="200"/>
-        <property name="pullNextDelayTimeMillis" value="5000"/>
+        <property name="pullNextDelayTimeMillis" value="60000"/>
     </bean>
     <bean id="defaultPullConsumer" class="com.common.tools.common.mq.pull.DefaultPullConsumer" init-method="init" destroy-method="destroy">
         <property name="namesrvAddr" value="${namesrvAddr}"/>
