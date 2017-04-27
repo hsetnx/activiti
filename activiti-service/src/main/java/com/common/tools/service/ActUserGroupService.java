@@ -1,10 +1,5 @@
 package com.common.tools.service;
 
-import com.alibaba.rocketmq.client.exception.MQBrokerException;
-import com.alibaba.rocketmq.client.exception.MQClientException;
-import com.alibaba.rocketmq.common.message.Message;
-import com.alibaba.rocketmq.remoting.exception.RemotingException;
-import com.common.tools.common.mq.DefaultProducer;
 import com.common.tools.common.utils.PubMethod;
 import com.common.tools.dto.ActGroupInfoReqDto;
 import com.common.tools.dto.ActUserInfoReqDto;
@@ -35,24 +30,6 @@ public class ActUserGroupService {
     private static Logger logger = LoggerFactory.getLogger(ActUserGroupService.class);
     @Autowired
     protected IdentityService identityService;
-    @Autowired
-    private DefaultProducer defaultProducer;
-
-
-    public void sendAcctBillInfo() {
-            try {
-                defaultProducer.getDefaultMQProducer().send(new Message("t_topic","t_tag", "我是敬岩".getBytes()));
-            } catch (MQClientException e) {
-                logger.error("客户端连接错误", e);
-            } catch (RemotingException e) {
-                logger.error("远程错误", e);
-            } catch (MQBrokerException e) {
-                logger.error("消息队列异常", e);
-            } catch (InterruptedException e) {
-                logger.error("消息队列长连接被中断", e);
-            }
-    }
-
 
 
     /**

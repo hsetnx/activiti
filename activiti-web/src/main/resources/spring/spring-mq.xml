@@ -5,31 +5,39 @@
 			http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
     <!-- MQ生产者 -->
-    <bean class="com.common.tools.common.mq.DefaultProducer" init-method="init" destroy-method="destroy" scope="singleton">
-        <property name="namesrvAddr" value="${mqnamesrv}"/>
-        <property name="producerGroup" value="${mqGroup}"/>
+    <bean class="com.common.tools.common.mq.producer.DefaultProducer" init-method="init" destroy-method="destroy" scope="singleton">
+        <property name="namesrvAddr" value="${namesrvAddr}"/>
+        <property name="group" value="${producer.mqGroup}"/>
     </bean>
 
-    <!-- 消费者服务信息 -->
-    <bean id="consumerInfo_1" class="com.common.tools.common.mq.beans.ConsumerInfo">
-        <property name="namesrvAddr" value="${mqnamesrv}"/>
-        <property name="consumerGroup" value="${mqGroup}"/>
-        <property name="consumeMessageBatchMaxSize" value="${mqConMaxSize}"/>
-    </bean>
-
-
-    <!---->
+    <!-- PUSH消费者 -->
     <bean id="testLestener" class="com.test.TestLestener"/>
-    <bean id="subscribeInfo" class="com.common.tools.common.mq.beans.SubscribeInfo">
-        <property name="topic" value="t_topic"/>
-        <property name="tag" value="t_tag"/>
+    <bean id="pushConfigEntity" class="com.common.tools.common.mq.push.PushConfigEntity">
+        <property name="topic" value="${topic}"/>
+        <property name="tag" value="${tag}"/>
+        <property name="consumeMessageBatchMaxSize" value="1024"/>
         <property name="messageListenerConcurrently" ref="testLestener"/>
     </bean>
-    <bean id="defaultPushConsumer" class="com.common.tools.common.mq.DefaultPushConsumer" init-method="init" destroy-method="destroy" scope="singleton">
-        <property name="consumerInfo" ref="consumerInfo_1"/>
-        <property name="subscribeInfo" ref="subscribeInfo"/>
+    <bean id="defaultPushConsumer" class="com.common.tools.common.mq.push.DefaultPushConsumer" init-method="init" destroy-method="destroy">
+        <property name="namesrvAddr" value="${namesrvAddr}"/>
+        <property name="group" value="${push.mqGroup}"/>
+        <property name="pushConfigEntity" ref="pushConfigEntity"/>
     </bean>
 
-
+    <!-- PULL消费者 -->
+    <bean id="pullTask" class="com.test.PullTask">
+        <property name="tag" value="${tag}"/>
+        <property name="pullNextDelayTimeMillis" value="5000"/>
+        <property name="maxNums" value="200"/>
+    </bean>
+    <bean id="pullConfigEntity" class="com.common.tools.common.mq.pull.PullConfigEntity">
+        <property name="topic" value="${topic}"/>
+        <property name="pullTaskCallback" ref="pullTask"/>
+    </bean>
+    <bean id="defaultPullConsumer" class="com.common.tools.common.mq.pull.DefaultPullConsumer" init-method="init" destroy-method="destroy">
+        <property name="namesrvAddr" value="${namesrvAddr}"/>
+        <property name="group" value="${pull.mqGroup}"/>
+        <property name="pullConfigEntity" ref="pullConfigEntity"/>
+    </bean>
 
 </beans>

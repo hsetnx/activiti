@@ -20,7 +20,7 @@ public class TestLestener implements MessageListenerConcurrently {
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
         for(MessageExt messageExt : msgs){
             String jsonStr = new String(messageExt.getBody());
-            System.out.println(jsonStr);
+            System.out.println("0000000000000"+jsonStr);
         }
         return null;
     }

@@ -1,11 +1,9 @@
-package com.common.tools.common.mq;
+package com.common.tools.common.mq.push;
 
 import com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer;
 import com.alibaba.rocketmq.client.exception.MQClientException;
 import com.alibaba.rocketmq.common.consumer.ConsumeFromWhere;
 import com.alibaba.rocketmq.common.protocol.heartbeat.MessageModel;
-import com.common.tools.common.mq.beans.ConsumerInfo;
-import com.common.tools.common.mq.beans.SubscribeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,10 +15,12 @@ import org.slf4j.LoggerFactory;
 public class DefaultPushConsumer {
 
     private final Logger logger = LoggerFactory.getLogger(DefaultPushConsumer.class);
-    //消费者基本信息
-    private ConsumerInfo consumerInfo;
+    //MQ服务器地址
+    private String namesrvAddr;
+    //集群组名
+    private String group;
     //订阅主题信息
-    private SubscribeInfo subscribeInfo;
+    private PushConfigEntity pushConfigEntity;
     //push 消费者
     private DefaultMQPushConsumer defaultMQPushConsumer;
 
@@ -30,49 +30,57 @@ public class DefaultPushConsumer {
      * @Describe:初始化方法
      */
     public void init() throws InterruptedException, MQClientException {
-        logger.info("DefaultPushConsumer initialize start...");
-        logger.info("消费者基本信息：" + consumerInfo.toString());
-        logger.info("订阅主题信息：" + subscribeInfo.toString());
+        logger.info("--------- DefaultPushConsumer initialize begin! ---------");
+        logger.info("--------- 订阅主题信息：" + pushConfigEntity.toString() + " ---------");
 
         defaultMQPushConsumer = new DefaultMQPushConsumer();
         //服务器地址
-        defaultMQPushConsumer.setNamesrvAddr(consumerInfo.getNamesrvAddr());
+        defaultMQPushConsumer.setNamesrvAddr(namesrvAddr);
         //消费者组
-        defaultMQPushConsumer.setConsumerGroup(consumerInfo.getConsumerGroup());
+        defaultMQPushConsumer.setConsumerGroup(group);
         //订阅信息
-        defaultMQPushConsumer.subscribe(subscribeInfo.getTopic(), subscribeInfo.getTag());
+        defaultMQPushConsumer.subscribe(pushConfigEntity.getTopic(), pushConfigEntity.getTag());
         //消费起始位置（队列前后）
         defaultMQPushConsumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         //最大批量消息处理数目
-        defaultMQPushConsumer.setConsumeMessageBatchMaxSize(consumerInfo.getConsumeMessageBatchMaxSize());
+        defaultMQPushConsumer.setConsumeMessageBatchMaxSize(pushConfigEntity.getConsumeMessageBatchMaxSize());
         //设置为集群消费(区别于广播消费)
         defaultMQPushConsumer.setMessageModel(MessageModel.CLUSTERING);
         //具体消费监听代理类
-        defaultMQPushConsumer.registerMessageListener(subscribeInfo.getMessageListenerConcurrently());
+        defaultMQPushConsumer.registerMessageListener(pushConfigEntity.getMessageListenerConcurrently());
         //启动
         defaultMQPushConsumer.start();
-
-        logger.info("DefaultPushConsumer initialize success...");
+        logger.info("--------- DefaultPushConsumer initialize success! ---------");
     }
 
     public void destroy() {
+        logger.info("--------- DefaultPushConsumer shutdown start! ---------");
         defaultMQPushConsumer.shutdown();
+        logger.info("--------- DefaultPushConsumer shutdown success! ---------");
     }
 
-    public ConsumerInfo getConsumerInfo() {
-        return consumerInfo;
+    public String getNamesrvAddr() {
+        return namesrvAddr;
     }
 
-    public void setConsumerInfo(ConsumerInfo consumerInfo) {
-        this.consumerInfo = consumerInfo;
+    public void setNamesrvAddr(String namesrvAddr) {
+        this.namesrvAddr = namesrvAddr;
     }
 
-    public SubscribeInfo getSubscribeInfo() {
-        return subscribeInfo;
+    public String getGroup() {
+        return group;
     }
 
-    public void setSubscribeInfo(SubscribeInfo subscribeInfo) {
-        this.subscribeInfo = subscribeInfo;
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public PushConfigEntity getPushConfigEntity() {
+        return pushConfigEntity;
+    }
+
+    public void setPushConfigEntity(PushConfigEntity pushConfigEntity) {
+        this.pushConfigEntity = pushConfigEntity;
     }
 
     public DefaultMQPushConsumer getDefaultMQPushConsumer() {

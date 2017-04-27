@@ -1,22 +1,30 @@
-package com.common.tools.common.mq;
+package com.common.tools.common.mq.producer;
 
 import com.alibaba.rocketmq.client.exception.MQBrokerException;
+import com.alibaba.rocketmq.client.exception.MQClientException;
+import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 import com.alibaba.rocketmq.client.producer.SendResult;
 import com.alibaba.rocketmq.common.message.Message;
+import com.alibaba.rocketmq.remoting.common.RemotingUtil;
 import com.alibaba.rocketmq.remoting.exception.RemotingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.rocketmq.client.exception.MQClientException;
-import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
-
+/**
+ * @Author: jingyan
+ * @Time: 2017/4/27 17:40
+ * @Describe:rocketMQ生产者
+ */
 public class DefaultProducer {
 
     private final Logger logger = LoggerFactory.getLogger(DefaultProducer.class);
-
-    private DefaultMQProducer defaultMQProducer;
-    private String producerGroup;
+    //MQ服务器地址
     private String namesrvAddr;
+    //集群组名
+    private String group;
+    //生产者
+    private DefaultMQProducer defaultMQProducer;
+
 
     /**
      * @Author: jingyan
@@ -24,16 +32,13 @@ public class DefaultProducer {
      * @Describe:defaultMQProducer init
      */
     public void init() throws MQClientException {
-        // 参数信息
-        logger.info("DefaultProducer initialize ...");
-        logger.info("producerGroup: " + producerGroup);
-        logger.info("namesrvAddr: " + namesrvAddr);
-        // 初始化
-        defaultMQProducer = new DefaultMQProducer(producerGroup);
+        logger.info("--------- DefaultProducer initialize begin! ---------");
+        defaultMQProducer = new DefaultMQProducer(group);
         defaultMQProducer.setNamesrvAddr(namesrvAddr);
-        defaultMQProducer.setInstanceName(String.valueOf(System.currentTimeMillis()));
+        defaultMQProducer.setInstanceName("mqProducer" + RemotingUtil.getLocalAddress());
         defaultMQProducer.start();
-        logger.info("DefaultProducer start success ...");
+        logger.info("--------- DefaultProducer initialize success! ---------");
+        logger.info(defaultMQProducer.getInstanceName());
     }
 
     /**
@@ -42,8 +47,9 @@ public class DefaultProducer {
      * @Describe:defaultMQProducer shutdown
      */
     public void destroy() {
+        logger.info("--------- DefaultMQProudcer shutdown begin! ---------");
         defaultMQProducer.shutdown();
-        logger.info("DefaultMQProudcer shutdown success!");
+        logger.info("--------- DefaultMQProudcer shutdown success! ---------");
     }
 
     /**
@@ -74,19 +80,19 @@ public class DefaultProducer {
         this.defaultMQProducer = defaultMQProducer;
     }
 
-    public String getProducerGroup() {
-        return producerGroup;
-    }
-
-    public void setProducerGroup(String producerGroup) {
-        this.producerGroup = producerGroup;
-    }
-
     public String getNamesrvAddr() {
         return namesrvAddr;
     }
 
     public void setNamesrvAddr(String namesrvAddr) {
         this.namesrvAddr = namesrvAddr;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

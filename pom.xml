@@ -35,9 +35,13 @@
                 <logFileDir>/letv/activiti/activiti.log</logFileDir>
                 <logLevel>DEBUG</logLevel>
                 <!--  rocketMQ nameService -->
-                <mqnamesrv>10.60.32.68:9876</mqnamesrv>
+                <namesrvAddr>10.60.32.68:9876</namesrvAddr>
                 <mqConMaxSize>1024</mqConMaxSize>
-                <mqGroup>activiti_producer</mqGroup>
+                <producer.mqGroup>activiti_producer</producer.mqGroup>
+                <pull.mqGroup>pullGroup</pull.mqGroup>
+                <push.mqGroup>pushGroup</push.mqGroup>
+                <topic>pro_topic</topic>
+                <tag>pro_tag</tag>
             </properties>
         </profile>
     </profiles>
