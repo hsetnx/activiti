@@ -25,7 +25,6 @@ public class DefaultProducer {
     //生产者
     private DefaultMQProducer defaultMQProducer;
 
-
     /**
      * @Author: jingyan
      * @Time: 2017/4/17 18:23

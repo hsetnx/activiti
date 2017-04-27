@@ -12,8 +12,8 @@ import java.util.*;
  * Description: redis 工具类
  */
 public class JedisClient {
-    private static final Logger LOG = Logger.getLogger(JedisClient.class);
 
+    private static final Logger LOG = Logger.getLogger(JedisClient.class);
     private static JedisCluster jedisCluster;
 
     static {

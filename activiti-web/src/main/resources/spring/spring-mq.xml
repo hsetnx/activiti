@@ -11,33 +11,28 @@
     </bean>
 
     <!-- PUSH消费者 -->
-    <bean id="testLestener" class="com.test.TestLestener"/>
-    <bean id="pushConfigEntity" class="com.common.tools.common.mq.push.PushConfigEntity">
+    <bean id="demoPushConsumer" class="com.test.DemoPushConsumer">
         <property name="topic" value="${topic}"/>
         <property name="tag" value="${tag}"/>
-        <property name="consumeMessageBatchMaxSize" value="1024"/>
-        <property name="messageListenerConcurrently" ref="testLestener"/>
+        <property name="maxNums" value="1024"/>
     </bean>
     <bean id="defaultPushConsumer" class="com.common.tools.common.mq.push.DefaultPushConsumer" init-method="init" destroy-method="destroy">
         <property name="namesrvAddr" value="${namesrvAddr}"/>
         <property name="group" value="${push.mqGroup}"/>
-        <property name="pushConfigEntity" ref="pushConfigEntity"/>
+        <property name="pushListenerAbstract" ref="demoPushConsumer"/>
     </bean>
 
     <!-- PULL消费者 -->
-    <bean id="pullTask" class="com.test.PullTask">
-        <property name="tag" value="${tag}"/>
-        <property name="pullNextDelayTimeMillis" value="5000"/>
-        <property name="maxNums" value="200"/>
-    </bean>
-    <bean id="pullConfigEntity" class="com.common.tools.common.mq.pull.PullConfigEntity">
+    <bean id="demoPullConsumer" class="com.test.DemoPullConsumer">
         <property name="topic" value="${topic}"/>
-        <property name="pullTaskCallback" ref="pullTask"/>
+        <property name="tag" value="${tag}"/>
+        <property name="maxNums" value="200"/>
+        <property name="pullNextDelayTimeMillis" value="5000"/>
     </bean>
     <bean id="defaultPullConsumer" class="com.common.tools.common.mq.pull.DefaultPullConsumer" init-method="init" destroy-method="destroy">
         <property name="namesrvAddr" value="${namesrvAddr}"/>
         <property name="group" value="${pull.mqGroup}"/>
-        <property name="pullConfigEntity" ref="pullConfigEntity"/>
+        <property name="pullCallBackAbstract" ref="demoPullConsumer"/>
     </bean>
 
 </beans>

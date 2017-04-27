@@ -6,11 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-
+/**
+ * @Author: jingyan
+ * @Time: 2017/4/27 20:15
+ * @Describe: 配置文件加载工具类
+ */
 public class BundleUtil {
+
     public static final Logger LOG = Logger.getLogger(BundleUtil.class);
     private static final Map<String, BundleUtil> bundleMap = new HashMap<String, BundleUtil>();
     private ResourceBundle bundle;
+
     public static BundleUtil newInstance(String name) {
         if (PubMethod.isEmpty(name)){
             return new BundleUtil(null);

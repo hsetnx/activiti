@@ -18,9 +18,9 @@ public class DefaultPullConsumer {
     private String namesrvAddr;
     //集群组名
     private String group;
-    //订阅主题信息
-    private PullConfigEntity pullConfigEntity;
-    //push 消费者
+    //回调对象
+    private PullCallBackAbstract pullCallBackAbstract;
+    //pull消费者
     private MQPullConsumerScheduleService mQPullConsumerScheduleService;
 
     /**
@@ -30,11 +30,11 @@ public class DefaultPullConsumer {
      */
     public void init() throws InterruptedException, MQClientException {
         logger.info("--------- DefaultPullConsumer initialize begin! ---------");
-        logger.info("--------- 订阅主题信息：" + pullConfigEntity.toString() + " ---------");
+        logger.info("--------- 订阅主题信息：" + pullCallBackAbstract.toString() + " ---------");
         mQPullConsumerScheduleService = new MQPullConsumerScheduleService(group);
         mQPullConsumerScheduleService.getDefaultMQPullConsumer().setNamesrvAddr(namesrvAddr);
         mQPullConsumerScheduleService.setMessageModel(MessageModel.CLUSTERING);
-        mQPullConsumerScheduleService.registerPullTaskCallback(pullConfigEntity.getTopic(), pullConfigEntity.getPullTaskCallback());
+        mQPullConsumerScheduleService.registerPullTaskCallback(pullCallBackAbstract.getTopic(), pullCallBackAbstract);
         mQPullConsumerScheduleService.start();
         logger.info("--------- DefaultPullConsumer initialize success! ---------");
     }
@@ -66,11 +66,11 @@ public class DefaultPullConsumer {
         this.group = group;
     }
 
-    public PullConfigEntity getPullConfigEntity() {
-        return pullConfigEntity;
+    public PullCallBackAbstract getPullCallBackAbstract() {
+        return pullCallBackAbstract;
     }
 
-    public void setPullConfigEntity(PullConfigEntity pullConfigEntity) {
-        this.pullConfigEntity = pullConfigEntity;
+    public void setPullCallBackAbstract(PullCallBackAbstract pullCallBackAbstract) {
+        this.pullCallBackAbstract = pullCallBackAbstract;
     }
 }
