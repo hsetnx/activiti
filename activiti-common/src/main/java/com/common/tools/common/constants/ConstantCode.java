@@ -6,5 +6,8 @@ package com.common.tools.common.constants;
  * @Describe:
  */
 public class ConstantCode {
+    /**
+     * BPMN 模板路径
+     */
     public static final String BPMN_BASE_PATH = "deployments/";
 }

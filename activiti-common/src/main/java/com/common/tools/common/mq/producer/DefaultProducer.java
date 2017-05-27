@@ -58,7 +58,10 @@ public class DefaultProducer {
      */
     public SendResult send(Message msg) {
         try {
-            return getDefaultMQProducer().send(msg);
+            logger.info("DefaultProducer_MQ发送消息配置：" + defaultMQProducer.toString());
+            SendResult sendResult = defaultMQProducer.send(msg);
+            logger.info("DefaultProducer_MQ发送消息结果：" + sendResult.toString());
+            return sendResult;
         } catch (MQClientException e) {
             logger.error("客户端连接错误", e);
         } catch (RemotingException e) {

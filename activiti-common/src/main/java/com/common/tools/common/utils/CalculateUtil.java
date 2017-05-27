@@ -1,7 +1,6 @@
-package com.common.tools.common.calculate;
+package com.common.tools.common.utils;
 
 
-import com.common.tools.common.utils.PubMethod;
 import org.apache.log4j.Logger;
 import org.lsmp.djep.xjep.TreeUtils;
 import org.lsmp.djep.xjep.XJep;
@@ -28,20 +27,21 @@ public class CalculateUtil {
 
     private static final Logger logger = Logger.getLogger(CalculateUtil.class);
 
+    private static XJep j;
+
     /**
      * Created with: jingyan.
      * Date: 2016/12/9  12:46
      * Description: 初始化
      */
-    public static XJep initialization() {
-        XJep j = new XJep();
+    static {
+        j = new XJep();
         j.addStandardConstants();
         j.addStandardFunctions();
         j.addComplex();
         j.setAllowUndeclared(true);
         j.setAllowAssignment(true);
         j.setImplicitMul(false);
-        return j;
     }
 
     /**
@@ -49,8 +49,7 @@ public class CalculateUtil {
      * Date: 2016/12/9  12:46
      * Description: 方程计算 外部入口
      */
-    public static ResultInfo calculationEquation(String formulaStr, Map<String, String> param) {
-        XJep j = initialization();
+    public static BigDecimal calculationEquation(String formulaStr, Map<String, String> param) {
         try {
             //解析 计算公式，并返回根节点
             Node expNode = j.parse(formulaStr);
@@ -68,9 +67,7 @@ public class CalculateUtil {
                 logger.info("计算---公式:   " + formulaStr + "   的结果异常...");
                 return null;
             }
-            ResultInfo resultInfo = new ResultInfo(formulaStr, result, paramKeys);
-            logger.info("结果---公式：   " + resultInfo.toString());
-            return resultInfo;
+            return result;
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -144,61 +141,5 @@ public class CalculateUtil {
             e.printStackTrace();
         }
         return null;
-    }
-
-}
-
-
-/**
- * @Author: jingyan
- * @Time: 2017/4/19 18:36
- * @Describe:计算结果集
- */
-class ResultInfo {
-
-    //公式
-    private String formulaStr;
-    //结果值
-    private BigDecimal result;
-    //用到的参数
-    private List<String> paramKeys;
-
-    @Override
-    public String toString() {
-        return "ResultInfo{" +
-                "formulaStr='" + formulaStr + '\'' +
-                ", result=" + result +
-                ", paramKeys=" + paramKeys +
-                '}';
-    }
-
-    public ResultInfo(String formulaStr, BigDecimal result, List<String> paramKeys) {
-        this.formulaStr = formulaStr;
-        this.result = result;
-        this.paramKeys = paramKeys;
-    }
-
-    public String getFormulaStr() {
-        return formulaStr;
-    }
-
-    public void setFormulaStr(String formulaStr) {
-        this.formulaStr = formulaStr;
-    }
-
-    public BigDecimal getResult() {
-        return result;
-    }
-
-    public void setResult(BigDecimal result) {
-        this.result = result;
-    }
-
-    public List<String> getParamKeys() {
-        return paramKeys;
-    }
-
-    public void setParamKeys(List<String> paramKeys) {
-        this.paramKeys = paramKeys;
     }
 }

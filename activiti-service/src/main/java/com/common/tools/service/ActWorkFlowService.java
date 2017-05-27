@@ -2,7 +2,7 @@ package com.common.tools.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.tools.common.constants.ConstantCode;
-import com.common.tools.common.constants.ProcessDefKeyEnum;
+import com.common.tools.common.enums.ProcessDefKeyEnum;
 import com.common.tools.common.utils.PubMethod;
 import com.common.tools.dto.OperateTaskReqDto;
 import com.common.tools.dto.StartTaskReqDto;
@@ -202,6 +202,10 @@ public class ActWorkFlowService {
      */
     public List<StartTaskRspDto> handleUserTask(String businessKey, List<Task> tasks) {
         List<StartTaskRspDto> taskInfoList = new ArrayList<>();
+        if (PubMethod.isEmpty(tasks)) {
+            logger.info("It is end...");
+            return taskInfoList;
+        }
         for (Task task : tasks) {
             StartTaskRspDto startTaskRspDto = new StartTaskRspDto();
             startTaskRspDto.setTaskId(task.getId());

@@ -1,4 +1,4 @@
-package com.common.tools.common.constants;
+package com.common.tools.common.enums;
 
 /**
  * Created by jingyan on 2016/12/14.

@@ -1,8 +1,10 @@
 package com.common.tools.common.utils;
 
 
-import java.util.*;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with: jingyan.
@@ -79,4 +81,10 @@ public class PubMethod {
             return false;
     }
 
+    public static void main(String[] args) {
+        Map<String,String> map =new HashMap<>();
+        map.put("a","1");
+        map.put("b","7");
+        System.out.println(CalculateUtil.calculationEquation("a+b",map));
+    }
 }
